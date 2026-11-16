@@ -18,7 +18,7 @@ export const getAllTasks = async (req, res) => {
         }
 
         const results = await tasksRepository.findAllTasks(page, limit)
-        res.status(200).json(results)
+        res.status(201).json(results)
     } catch (error) {
         console.log(`Esse foi o erro encontrado ao tentar pegar as tarefas: ${error}`)
         res.status(500).json(
