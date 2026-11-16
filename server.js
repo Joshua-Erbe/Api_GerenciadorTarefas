@@ -1,3 +1,5 @@
+import SwaggerUI from "swagger-ui-express";
+import swaggerSpec from "./src/swagger.js";
 import express from 'express';
 import tasks from './src/routes/tasksRoutes.js'
 import users from './src/routes/usersRoutes.js'
@@ -6,6 +8,7 @@ import health from './src/routes/healthRoutes.js'
 import { TestConnect } from './src/connect.js';
 
 const apiTarefas = express()
+apiTarefas.use('/api-docs', SwaggerUI.serve, SwaggerUI.setup(swaggerSpec));
 apiTarefas.use(express.json())
 apiTarefas.use('/', tasks)
 apiTarefas.use('/', users)
