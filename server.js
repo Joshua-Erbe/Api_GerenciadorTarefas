@@ -6,7 +6,6 @@ import health from './src/routes/healthRoutes.js'
 import { TestConnect } from './src/connect.js';
 
 const apiTarefas = express()
-
 apiTarefas.use(express.json())
 apiTarefas.use('/', tasks)
 apiTarefas.use('/', users)
