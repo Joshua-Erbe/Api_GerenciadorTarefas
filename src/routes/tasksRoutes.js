@@ -26,6 +26,28 @@ tasks_routes.post('/RegisterTask', taskController.RegisterTask)
 *        post:
 *            tags: [Tarefas]
 *            summary: Cadastrar uma nova tarefa
+*            description: Permite cadastrar uma nova tarefa no sistema
+*            parameters:
+*               - in: query
+*                 name: email_user
+*                 required: true
+*                 description: Email do usuário que está cadastrando a tarefa
+*                 schema:
+*                   type: string
+*                   example: "usuario@example.com"
+*            requestBody:
+*                required: true
+*                content:
+*                   application/json:
+*                    schema:
+*                       type: object
+*                       properties:
+*                          task_name:
+*                               type: string
+*                               example: "Estudar 2 horas por dia"
+*                          task_date:
+*                               type: date-time
+*                               example: "2026-11-16 20:00:00"
 *            responses:
 *                201:
 *                    description: Tarefa registrada com sucesso, retorna um objeto com uma mensagem de sucesso
