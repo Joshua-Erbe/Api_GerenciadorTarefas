@@ -1,7 +1,7 @@
 {
   "name": "gerenciador_de_tarefas",
   "version": "1.0.0",
-  "description": "Pequeno projeto de um Gerenciador de Tarefas para estudo de fullstack",
+  "description": "projeto academico de uma API de um Gerenciador de Tarefas",
   "homepage": "https://github.com/JoshuaDeOliveira/GerenciadorTarefas#readme",
   "bugs": {
     "url": "https://github.com/JoshuaDeOliveira/GerenciadorTarefas/issues"
