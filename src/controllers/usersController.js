@@ -26,9 +26,9 @@ export const getUsers = async (req, res) => {
 
 export const RegisterUser = async (req, res) => {
     try {
-        const nameuser = req.body.name
-        const passworduser = req.body.password
-        const emailuser = req.body.email
+        const nameuser = req.body.user_name
+        const passworduser = req.body.user_password
+        const emailuser = req.body.user_email
 
         const response = await usersRepository.createUser(nameuser, passworduser, emailuser)
 
@@ -36,9 +36,7 @@ export const RegisterUser = async (req, res) => {
     } catch (error) {
         console.log(`Esse foi o erro encontrado ao tentar visualizar os usuarios: ${error}`)
         res.status(400).json(
-            {
-                MessageError: 'Erro ao tentar criar um usuario! Tente novamente ou verifique as informações inseridas'
-            }
+            { MessageError: 'Erro ao tentar criar um usuario! Tente novamente ou verifique as informações inseridas' }
         )
     }
     
@@ -46,9 +44,9 @@ export const RegisterUser = async (req, res) => {
 
 export const UpdateUser = async (req, res) => {
     try {
-        const attname = req.body.newname
-        const attpassword = req.body.newpassword
-        const attemail = req.body.newemail
+        const attname = req.body.newUser_name
+        const attpassword = req.body.newUser_password
+        const attemail = req.body.newUser_email
         const id_user = req.query.id_user
 
         const response = await usersRepository.attUser(attname, attpassword, attemail, id_user)
