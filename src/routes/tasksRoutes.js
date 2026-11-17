@@ -26,7 +26,7 @@ tasks_routes.post('/RegisterTask', taskController.RegisterTask)
 *        post:
 *            tags: [Tarefas]
 *            summary: Cadastrar uma nova tarefa
-*            description: Permite cadastrar uma nova tarefa no sistema
+*            description: Permite cadastrar uma nova tarefa no banco de dados, é necessário informar o email do usuário que está cadastrando a tarefa, o nome da tarefa e a data da tarefa
 *            parameters:
 *               - in: query
 *                 name: email_user
@@ -46,13 +46,13 @@ tasks_routes.post('/RegisterTask', taskController.RegisterTask)
 *                               type: string
 *                               example: "Estudar 2 horas por dia"
 *                          task_date:
-*                               type: date-time
+*                               type: string
 *                               example: "2026-11-16 20:00:00"
 *            responses:
 *                201:
-*                    description: Tarefa registrada com sucesso, retorna um objeto com uma mensagem de sucesso
+*                    description: 'Tarefa registrada com sucesso, retorna { "MessageSystem": "Tarefa adicionada com sucesso!" }'
 *                400:
-*                   description: Erro ao registrar a tarefa, retorna um objeto com uma mensagem de erro
+*                   description: 'Erro ao registrar a tarefa, retorna { "ErrorMessage": "Erro ao registrar a tarefa! Verifique as informações e tente novamente" }'
 */
 
 tasks_routes.delete('/DeleteTask', taskController.eraseTask)
@@ -63,6 +63,15 @@ tasks_routes.delete('/DeleteTask', taskController.eraseTask)
 *        delete:
 *            tags: [Tarefas]
 *            summary: Deletar uma tarefa cadastrada
+*            description: Permite deletar uma tarefa cadastrada no banco de dados, é necessario informar o id da tarefa que deseja deletar
+*            parameters:
+*               - in: query
+*                 name: id_task
+*                 required: true
+*                 description: Id da tarefa a ser deletada
+*                 schema:
+*                   type: integer
+*                   example: 1                      
 *            responses:
 *                200:
 *                    description: Tarefa deletada com sucesso, retorna um objeto com uma mensagem de sucesso
@@ -78,6 +87,28 @@ tasks_routes.put('/UpdateTask', taskController.attTask)
 *        put:
 *            tags: [Tarefas]   
 *            summary: Atualizar uma tarefa cadastrada
+*            description: Permite atualizar uma tarefa cadastrada no banco de dados, é necessário informar o id da tarefa que deseja atualizar, o novo nome da tarefa e a nova data da tarefa
+*            parameters:
+*               - in: query
+*                 name: id_task
+*                 required: true
+*                 description: Id da tarefa a ser atualizada
+*                 schema:
+*                   type: integer
+*                   example: 1
+*            requestBody:
+*               required: true
+*               content: 
+*                   application/json:
+*                       schema:
+*                           type: object
+*                           properties:
+*                               new_name:
+*                                   type: string
+*                                   example: "Passear com o cachorro"
+*                               new_date:
+*                                   type: string
+*                                   example: "2026-11-16 20:00:00"
 *            responses:
 *                200:
 *                    description: Tarefa atualizada com sucesso, retorna um objeto com uma mensagem de sucesso

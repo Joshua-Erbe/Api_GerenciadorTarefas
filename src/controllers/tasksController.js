@@ -37,7 +37,7 @@ export const RegisterTask = async (req, res) => {
 
         const response = await tasksRepository.createTask(email_user, task_name, task_date)
 
-        res.status(200).json(response)
+        res.status(201).json(response)
     } catch (error) {
         console.log(`Esse foi o erro encontrado ao tentar pegar as tarefas: ${error}`)
         res.status(400).json(
