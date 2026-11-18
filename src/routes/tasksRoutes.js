@@ -11,6 +11,21 @@ tasks_routes.get('/Tasks', taskController.getAllTasks)
 *        get:
 *            tags: [Tarefas]
 *            summary: Lista todas as tarefas cadastradas
+*            parameters: 
+*               - in: query
+*                 name: pagina
+*                 required: true
+*                 description: qual o numero da pagina que deseja acessar
+*                 schema:
+*                   type: integer
+*                   example: 1
+*               - in: query
+*                 name: limite
+*                 required: true
+*                 description: qual o numero de itens por pagina
+*                 schema:
+*                   type: integer
+*                   example: 10
 *            responses:
 *                200:
 *                    description: Tarefas listadas com sucesso, retorna um array de objetos com as tarefas cadastradas
