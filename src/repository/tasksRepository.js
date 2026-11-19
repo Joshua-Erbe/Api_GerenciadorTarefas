@@ -27,15 +27,17 @@ export const createTask = async (emailuser, taskname, taskdate) => {
         )
 
         if (response.affectedRows === 0) {
-            throw new Error('Erro ao registrar a tarefa, verifique a informação')
+            const erro = new Error('Erro ao registrar a tarefa, verifique as informações e tente novamente!')
+            erro.status = 400
+            throw erro
         } else {
             return {
-                MessageSystem: 'Tarefa adicionada com sucesso!'
+                mensagem: 'Tarefa adicionada com sucesso!'
             }
         }
     } catch (error) {
         console.log(`Esse foi o erro encontrado ao registrar a tarefa: ${error}`)
-        throw new Error('Erro ao registrar a tarefa!')
+        throw new Error('Erro ao registrar a tarefa! tente novamente')
     }
 }
 

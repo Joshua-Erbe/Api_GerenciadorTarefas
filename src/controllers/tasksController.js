@@ -22,15 +22,11 @@ export const RegisterTask = async (req, res) => {
         const task_name = req.body.task_name
         const task_date = req.body.task_date
 
-        const response = await tasksRepository.createTask(email_user, task_name, task_date)
-
+        const response = await tasksServices.criarNovaTarefa(email_user, task_name, task_date)
         res.status(201).json(response)
     } catch (error) {
         console.log(`Esse foi o erro encontrado ao tentar pegar as tarefas: ${error}`)
-        res.status(400).json(
-            {
-                ErrorMessage: "Erro ao registrar a tarefa! Verifique as informações e tente novamente"
-            }
+        res.status(error.code || 500).json({ErrorMessage: error.message}
         )
     }
 }
