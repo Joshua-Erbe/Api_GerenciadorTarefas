@@ -9,8 +9,10 @@ API de estudo para um gerenciador de tarefas, desenvolvida em Node.js com MySQL.
 - MySQL
 - [mysql2](https://www.npmjs.com/package/mysql2) para a conexão com o banco
 - [dotenv](https://www.npmjs.com/package/dotenv) para as variáveis de ambiente
-- Swagger UI
-- Swagger jsdoc
+- [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) para a interface da documentação
+- [swagger-jsdoc](https://www.npmjs.com/package/swagger-jsdoc) para gerar a documentação Swagger a partir dos comentários
+- [Jest](https://www.npmjs.com/package/jest) para os testes
+- [Babel](https://www.npmjs.com/package/@babel/core) para a transpilação do código
 
 ## Pré-requisitos
 

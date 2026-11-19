@@ -1,5 +1,7 @@
 import * as tasksRepository from "../repository/tasksRepository.js";
 
+const TAMANHO_MAX_NOME = 100;
+
 export const normalizarPaginacao = (page, limit) => {
     let pageNovo = parseInt(page, 10 ) || 1;
     let limitNovo = parseInt(limit, 10)
@@ -30,7 +32,7 @@ export const criarNovaTarefa = async (email_user, task_name, task_date) => {
         erro.status = 400
         throw erro
     }
-    if (!task_name.trim()) {
+    if (!task_name.trim() || task_name < TAMANHO_MAX_NOME) {
         const erro = new Error("O Nome da tarefa não é valido! Tente novamente inserindo um nome valido")
         erro.status = 400
         throw erro
