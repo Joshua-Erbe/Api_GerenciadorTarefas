@@ -20,6 +20,41 @@ export const Ehemail = (emailTeste) => {
     return resposta
 }
 
+const testarNome = (task_name) => {
+    if (!task_name || !task_name.trim()) {
+        const erro = new Error("O Nome da tarefa esta invalido, por favor insira um nome valido!");
+        erro.status = 400
+        throw erro
+    }
+
+    if (task_name.length > TAMANHO_MAX_NOME) {
+        const erro = new Error("Por favor, insira um nome de ATE 100 caracteres");
+        erro.status = 400
+        throw erro
+    }
+}
+
+const testarData = (task_date) => {
+    if (!task_date) {
+        const erro = new Error("Não foi enviada uma data para a tarefa, por favor envia a data!");
+        erro.status = 400
+        throw erro
+    }
+
+    const data = new Date(task_date)
+    if (isNaN(data.getTime())) {
+        const erro = new Error("a data enviada é invalida");
+        erro.status = 400
+        throw erro
+    }
+
+    if (data < new Date()) {
+        const erro = new Error("Não é possivel agendar uma tarefa para o passado")
+        erro.status = 400
+        throw erro
+    }
+}
+
 export const listarTarefas = async (pageRecebido, limiteRecebido) => {
     const {pageNovo, limitNovo} = normalizarPaginacao(pageRecebido, limiteRecebido)
     return await tasksRepository.findAllTasks(pageNovo, limitNovo)
@@ -28,14 +63,14 @@ export const listarTarefas = async (pageRecebido, limiteRecebido) => {
 export const criarNovaTarefa = async (email_user, task_name, task_date) => {
     const resultadoEmail = Ehemail(email_user)
     if (!resultadoEmail) {
-        const erro = new Error("O Email do usuairo não é valido! Tente novamente inserindo um email valido")
+        const erro = new Error("O Email do usuario não é valido! Tente novamente inserindo um email valido")
         erro.status = 400
         throw erro
     }
-    if (!task_name.trim() || task_name < TAMANHO_MAX_NOME) {
-        const erro = new Error("O Nome da tarefa não é valido! Tente novamente inserindo um nome valido")
-        erro.status = 400
-        throw erro
-    }
+
+    testarNome(task_name)
+
+    testarData(task_date)
+    
     return await tasksRepository.createTask(email_user, task_name, task_date)
 }
