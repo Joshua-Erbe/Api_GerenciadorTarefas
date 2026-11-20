@@ -20,6 +20,16 @@ export const Ehemail = (emailTeste) => {
     return resposta
 }
 
+const EmailCadastrado = async (email_user) => {
+    const encontrado = await tasksRepository.existsUser(email_user)
+
+    if (encontrado.length === 0) {
+        const erro = new Error("Usuario não encontrado")
+        erro.status = 404
+        throw erro
+    }
+}
+
 const testarNome = (task_name) => {
     if (!task_name || !task_name.trim()) {
         const erro = new Error("O Nome da tarefa esta invalido, por favor insira um nome valido!");
@@ -67,10 +77,11 @@ export const criarNovaTarefa = async (email_user, task_name, task_date) => {
         erro.status = 400
         throw erro
     }
-
+    
     testarNome(task_name)
-
     testarData(task_date)
+
+    await EmailCadastrado(email_user)
     
     return await tasksRepository.createTask(email_user, task_name, task_date)
 }

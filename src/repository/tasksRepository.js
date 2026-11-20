@@ -14,6 +14,19 @@ export const findAllTasks = async (page, limit) => {
     }
 }
 
+export const existsUser = async (email_user) => {
+    try {
+        const [rows] = await poolconnect.execute(
+            `SELECT * FROM users WHERE email_user = ?`, [email_user]
+        )
+
+        return rows
+    } catch (error) {
+        console.log(`Esse foi o erro encontrado: ${error}`)
+        throw new Error("Erro ao buscar um usuario cadastrado com o email escolhido")
+    }
+}
+ 
 export const createTask = async (emailuser, taskname, taskdate) => {
     try {
         const [user_id] = await poolconnect.execute(
