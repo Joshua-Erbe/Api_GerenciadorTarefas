@@ -26,6 +26,24 @@ export const existsUser = async (email_user) => {
         throw new Error("Erro ao buscar um usuario cadastrado com o email escolhido")
     }
 }
+
+export const duplicateTask = async (email_user, task_date) => {
+    try {
+        const [user_id] = await poolconnect.execute(
+            `SELECT id_user FROM users WHERE email_user = ?`, [email_user]
+        )
+        const who_id = user_id[0].id_user
+
+        const [tasks] = await poolconnect.execute(
+            `SELECT id_task FROM tasks WHERE who_task = ? AND task_date = ?`, [who_id, task_date]
+        )
+
+        return tasks
+    } catch (error) {
+        console.log(`Esse foi o erro encontrado ao testar a task: ${error.message}`)
+        throw new Error("Não foi possivel testar a existencia da task");
+    }
+}
  
 export const createTask = async (emailuser, taskname, taskdate) => {
     try {

@@ -2,6 +2,8 @@ import * as tasksRepository from "../repository/tasksRepository.js";
 
 const TAMANHO_MAX_NOME = 100;
 
+/*Regra para normalizar a paginacao*/
+
 export const normalizarPaginacao = (page, limit) => {
     let pageNovo = parseInt(page, 10 ) || 1;
     let limitNovo = parseInt(limit, 10)
@@ -13,6 +15,13 @@ export const normalizarPaginacao = (page, limit) => {
 
     return {pageNovo, limitNovo}
 }
+
+export const listarTarefas = async (pageRecebido, limiteRecebido) => {
+    const {pageNovo, limitNovo} = normalizarPaginacao(pageRecebido, limiteRecebido)
+    return await tasksRepository.findAllTasks(pageNovo, limitNovo)
+}
+
+/*Regras de serviço para criar uma tarefa nova*/
 
 export const Ehemail = (emailTeste) => {
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -65,9 +74,14 @@ const testarData = (task_date) => {
     }
 }
 
-export const listarTarefas = async (pageRecebido, limiteRecebido) => {
-    const {pageNovo, limitNovo} = normalizarPaginacao(pageRecebido, limiteRecebido)
-    return await tasksRepository.findAllTasks(pageNovo, limitNovo)
+const TarefaDuplicada = async (email_user, task_date) => {
+    const resposta = await tasksRepository.duplicateTask(email_user, task_date)
+
+    if (resposta.length > 0) {
+        const erro = new Error("Ja existe uma tarefa marcada")
+        erro.status = 409
+        throw erro
+    } 
 }
 
 export const criarNovaTarefa = async (email_user, task_name, task_date) => {
@@ -77,11 +91,12 @@ export const criarNovaTarefa = async (email_user, task_name, task_date) => {
         erro.status = 400
         throw erro
     }
-    
+
     testarNome(task_name)
     testarData(task_date)
 
     await EmailCadastrado(email_user)
+    await TarefaDuplicada(email_user, task_date)
     
     return await tasksRepository.createTask(email_user, task_name, task_date)
 }
