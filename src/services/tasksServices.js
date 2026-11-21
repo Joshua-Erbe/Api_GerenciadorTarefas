@@ -23,13 +23,13 @@ export const listarTarefas = async (pageRecebido, limiteRecebido) => {
 
 /*Regras de serviço para criar uma tarefa nova*/
 
-export const Ehemail = (emailTeste) => {
+export const ehEmail = (emailTeste) => {
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const resposta = regexEmail.test(emailTeste)
     return resposta
 }
 
-const EmailCadastrado = async (email_user) => {
+export const EmailCadastrado = async (email_user) => {
     const encontrado = await tasksRepository.existsUser(email_user)
 
     if (encontrado.length === 0) {
@@ -39,7 +39,7 @@ const EmailCadastrado = async (email_user) => {
     }
 }
 
-const testarNome = (task_name) => {
+export const testarNome = (task_name) => {
     if (!task_name || !task_name.trim()) {
         const erro = new Error("O Nome da tarefa esta invalido, por favor insira um nome valido!");
         erro.status = 400
@@ -53,8 +53,8 @@ const testarNome = (task_name) => {
     }
 }
 
-const testarData = (task_date) => {
-    if (!task_date) {
+export const testarData = (task_date) => {
+    if (!task_date || !task_date.trim()) {
         const erro = new Error("Não foi enviada uma data para a tarefa, por favor envia a data!");
         erro.status = 400
         throw erro
@@ -62,7 +62,7 @@ const testarData = (task_date) => {
 
     const data = new Date(task_date)
     if (isNaN(data.getTime())) {
-        const erro = new Error("a data enviada é invalida");
+        const erro = new Error("A data enviada é invalida!");
         erro.status = 400
         throw erro
     }
@@ -74,18 +74,18 @@ const testarData = (task_date) => {
     }
 }
 
-const TarefaDuplicada = async (email_user, task_date) => {
+export const tarefaDuplicada = async (email_user, task_date) => {
     const resposta = await tasksRepository.duplicateTask(email_user, task_date)
 
     if (resposta.length > 0) {
         const erro = new Error("Ja existe uma tarefa marcada")
-        erro.status = 409
+        erro.status = 409   
         throw erro
     } 
 }
 
 export const criarNovaTarefa = async (email_user, task_name, task_date) => {
-    const resultadoEmail = Ehemail(email_user)
+    const resultadoEmail = ehEmail(email_user)
     if (!resultadoEmail) {
         const erro = new Error("O Email do usuario não é valido! Tente novamente inserindo um email valido")
         erro.status = 400
@@ -96,7 +96,7 @@ export const criarNovaTarefa = async (email_user, task_name, task_date) => {
     testarData(task_date)
 
     await EmailCadastrado(email_user)
-    await TarefaDuplicada(email_user, task_date)
+    await tarefaDuplicada(email_user, task_date)
     
     return await tasksRepository.createTask(email_user, task_name, task_date)
 }
