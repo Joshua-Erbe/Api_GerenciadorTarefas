@@ -68,7 +68,7 @@ export const createTask = async (emailuser, taskname, taskdate) => {
         }
     } catch (error) {
         console.log(`Esse foi o erro encontrado ao registrar a tarefa: ${error}`)
-        throw new Error('Erro ao registrar a tarefa! tente novamente')
+        throw error
     }
 }
 

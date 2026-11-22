@@ -39,7 +39,7 @@ describe("ehEmail?", () => {
     })
 })
 
-describe("EmailCadastrado", () => {
+describe("EmailCadastrado", () => {git a
     beforeEach(() => {
         jest.clearAllMocks()
     })
@@ -109,5 +109,37 @@ describe("tarefaDuplicada", () => {
 
         await expect(tasksServices.tarefaDuplicada("joshuaoliveira@outlook.com", "2026-11-22 12:41:00"))
             .resolves.toBeUndefined();
+    })
+})
+
+describe("criarNovaTarefa", () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
+    it("Deve mandar uma mensagem dizendo que a tarefa foi criada com sucesso", async () => {
+        tasksRepository.existsUser.mockResolvedValue([{id_user: 1}])
+        tasksRepository.duplicateTask.mockResolvedValue([])
+        tasksRepository.createTask.mockResolvedValue({ mensagem: "Tarefa adicionada com sucesso!" })
+
+        const resultado = await tasksServices.criarNovaTarefa("joshuaoliveira@gmail.com", "Jogar com os amigos", "2030-11-22 12:41:00")
+
+        expect(resultado).toEqual({mensagem: "Tarefa adicionada com sucesso!"})
+        expect(tasksRepository.createTask).toHaveBeenCalledWith("joshuaoliveira@gmail.com", "Jogar com os amigos", "2030-11-22 12:41:00")
+        expect(tasksRepository.existsUser).toHaveBeenCalledWith("joshuaoliveira@gmail.com")
+        expect(tasksRepository.duplicateTask).toHaveBeenCalledWith("joshuaoliveira@gmail.com", "2030-11-22 12:41:00")
+    })
+
+    it("Deve propagar o erro quando o createTask falha", async () => {
+        tasksRepository.existsUser.mockResolvedValue([{id_user: 1}])
+        tasksRepository.duplicateTask.mockResolvedValue([])
+        tasksRepository.createTask.mockRejectedValue(new Error("Erro ao registrar a tarefa! tente novamente"))
+        
+        await expect(tasksServices.criarNovaTarefa("joshuaoliveira@gmail.com", "Jogar com os amigos", "2030-11-22 12:41:00"))
+            .rejects.toThrow("Erro ao registrar a tarefa! tente novamente")
+
+        expect(tasksRepository.createTask).toHaveBeenCalledWith("joshuaoliveira@gmail.com", "Jogar com os amigos", "2030-11-22 12:41:00")
+        expect(tasksRepository.existsUser).toHaveBeenCalledWith("joshuaoliveira@gmail.com")
+        expect(tasksRepository.duplicateTask).toHaveBeenCalledWith("joshuaoliveira@gmail.com", "2030-11-22 12:41:00")
     })
 })
