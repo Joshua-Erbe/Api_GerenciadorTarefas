@@ -1,4 +1,4 @@
-# Api de um Gerenciador de Tarefas
+# API Gerenciador de Tarefas
 
 Projeto de uma API de um gerenciador de tarefas criada para fins acadêmicos de estudo sobre API REST, testes automatizados e documentação Swagger.
 
