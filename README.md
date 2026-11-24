@@ -1,6 +1,6 @@
-# Gerenciador de Tarefas
+# Api de um Gerenciador de Tarefas
 
-API de estudo para um gerenciador de tarefas, desenvolvida em Node.js com MySQL. O projeto está em fase de desenvolvimento e ainda não está finalizado.
+Projeto de uma API de um gerenciador de tarefas criada para fins acadêmicos de estudo sobre API REST, testes automatizados e documentação Swagger.
 
 ## Tecnologias
 
